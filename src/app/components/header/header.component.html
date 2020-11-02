@@ -1,0 +1,88 @@
+<div class="bl-fixed">
+
+    <mat-progress-bar *ngIf="loading" color="accent" mode="intermediate">
+    </mat-progress-bar>
+  
+    <!-- sets toolbar to transparent if the 'transparent' input is set to true -->
+    <mat-toolbar [ngClass]="{'transparent': transparent===true}" color="primary">
+      <mat-toolbar-row class="navigation-toolbar">
+        <span>
+          <button mat-button routerLink="/home">
+            <h2 class="navigation-text">
+              <img src="assets/icons/logo-nowhite.png" class="navigation-logo">
+              {{ appName }}
+            </h2>
+          </button>
+  
+          <span class="navigation-collapse-content" id="navigation-menu">
+            <button mat-button routerLink="/about">
+              <h2 class="navigation-text">Über uns</h2>
+            </button>
+            <button mat-button routerLink="/sermon">
+              <h2 class="navigation-text">Medien</h2>
+            </button>
+            <button mat-button routerLink="/contact">
+              <h2 class="navigation-text">Kontakt</h2>
+            </button>
+          </span>
+        </span>
+  
+        <span fxFlex="auto"></span>
+  
+        <!-- user menu for collapsed navigation -->
+        <button mat-button [matMenuTriggerFor]="collapsedMenu" class="navigation-collapsed-menu">
+  
+          <span class="material-icons hamburger-icon">menu</span>
+          <mat-menu #collapsedMenu="matMenu">
+            <button mat-menu-item routerLink="/home">
+              Home
+            </button>
+  
+            <button mat-menu-item routerLink="/about">
+              Über uns
+            </button>
+  
+            <button mat-menu-item routerLink="/media">
+              Medien
+            </button>
+  
+            <button mat-menu-item routerLink="/contact">
+              Kontakt
+            </button>
+          </mat-menu>
+        </button>
+  
+        <!-- +++++++++++ -->
+        <!-- User button -->
+        <!-- +++++++++++ -->
+        <!-- two buttons, one if user is logged in, one, if user is not logged in -->
+        <!-- <button *ngIf="!me$" mat-button routerLink="/users">
+          <mat-icon aria-hidden="false" aria-label="account icon">account_circle</mat-icon>
+        </button>
+  
+        <button *ngIf="me$" mat-button [matMenuTriggerFor]="userMenu">
+          <div *ngIf="me$.thumb_picture"></div>
+          <img src={{me$.thumb_picture}} alt="Profile Picture" style="height: 55px; border-radius: 50%;"
+            onerror="this.src='../../../../../assets/pictures/user.png'">
+        </button>
+        <mat-menu #userMenu="matMenu">
+  
+          <button mat-menu-item routerLink="/users">
+            <mat-icon aria-hidden="false" aria-label="account icon">account_circle</mat-icon>
+            Users
+          </button>
+  
+          <button mat-menu-item (click)="onLogout()">
+            <mat-icon aria-hidden="false" aria-label="logout icon">logout</mat-icon>
+            Logout
+          </button>
+  
+        </mat-menu> -->
+        <!-- +++++++++++ -->
+        <!-- User button -->
+        <!-- +++++++++++ -->
+  
+  
+      </mat-toolbar-row>
+    </mat-toolbar>
+  </div>
