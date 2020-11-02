@@ -1,1 +1,169 @@
+
+// Custom Theming for Angular Material
+// For more information: https://material.angular.io/guide/theming
+@import '~@angular/material/theming';
+// Plus imports for other components in your app.
+
+// Include the common styles for Angular Material. We include this here so that you only
+// have to load a single css file for Angular Material in your app.
+// Be sure that you only ever include this mixin once!
+@include mat-core();
+
+// Define the palettes for your theme using the Material Design palettes available in palette.scss
+// (imported above). For each palette, you can optionally specify a default, lighter, and darker
+// hue. Available color palettes: https://material.io/design/color/
+$bibel-leben-frontend-primary: mat-palette($mat-indigo);
+$bibel-leben-frontend-accent: mat-palette($mat-pink, A200, A100, A400);
+
+// The warn palette is optional (defaults to red).
+$bibel-leben-frontend-warn: mat-palette($mat-red);
+
+// Create the theme object. A theme consists of configurations for individual
+// theming systems such as "color" or "typography".
+$bibel-leben-frontend-theme: mat-light-theme((
+  color: (
+    primary: $bibel-leben-frontend-primary,
+    accent: $bibel-leben-frontend-accent,
+    warn: $bibel-leben-frontend-warn,
+  )
+));
+
+// Include theme styles for core and each component used in your app.
+// Alternatively, you can import and @include the theme mixins for each component
+// that you are using.
+@include angular-material-theme($bibel-leben-frontend-theme);
+
 /* You can add global styles to this file, and also import other style files */
+// @import "~@angular/material/prebuilt-themes/indigo-pink.css";
+
+
+// include standard theme for bl19
+@import "themes/bl.theme.scss";
+@include mat-core($bl-typography);
+@include angular-material-theme($bl-light-theme);
+
+
+//$bl-background-color: map-get($bl19-theme-primary, background );
+$bl-background-color-light: mat-color($bl-theme-primary, 50);
+$bl-background-color-middle: mat-color($bl-theme-primary, 100);
+$bl-background-color-dark: mat-color($bl-theme-primary, 200);
+$bl-background-color-darkest: mat-color($bl-theme-primary, 500);
+
+
+$bl-accent-color-light: mat-color($bl-theme-accent, 50);
+$bl-accent-color-middle: mat-color($bl-theme-accent, 200);
+$bl-accent-color-dark: mat-color($bl-theme-accent, 500);
+
+// to avoid white margin on the app:
+body {
+    margin: 0;
+    background-color: $bl-background-color-middle;
+}
+
+// this is to to disable text selecting on desired areas
+.noselect {
+    -webkit-touch-callout: none; /* iOS Safari */
+      -webkit-user-select: none; /* Safari */
+       -khtml-user-select: none; /* Konqueror HTML */
+         -moz-user-select: none; /* Old versions of Firefox */
+          -ms-user-select: none; /* Internet Explorer/Edge */
+              user-select: none; /* Non-prefixed version, currently
+                                    supported by Chrome, Opera and Firefox */
+}
+
+.transparent {
+    background-color: transparent;
+}
+  
+  // hides scrollbar
+::-webkit-scrollbar {
+    width: 0px;
+    background: transparent; /* make scrollbar transparent */
+}
+
+// h1 {
+//     color: mat-color($bl19-theme-primary, darker);
+// }
+
+// h2 {
+//     color: mat-color($bl19-theme-primary, darker);
+// }
+
+// h3 {
+//     color: mat-color($bl19-theme-primary, darker);
+// }
+
+
+.bl19LightBackground {
+    background-color: $bl-background-color-light;
+}
+
+.bl19DarkerBackground {
+    background-color: $bl-background-color-dark;
+}
+
+
+.bl19inputFild {
+    width: 100%;
+}
+
+
+.blcenterelement {
+    position: relative;
+    display: flex;
+    justify-content: center;
+}
+
+
+
+.bl-border {
+    border-left: 2px solid $bl-background-color-middle;
+    margin-bottom: 10px;
+}
+
+
+// ++++++++++++++++++++++++++++++++++++++++++++++++++++++
+// +++++++++++ How to show Cards ++++++++++++++++++++++++
+// +++++++++++ Leitungsteam, Dabei sein +++++++++++++++++
+// ++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+// use fxflex to order event cards:
+@mixin max-width($width) {
+    @media screen and (max-width: $width) {
+        @content;
+    }
+}
+
+// TODO: rename all blcontainer class-associations to simply container
+.blcontainer {
+    position: relative;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+}
+
+.container {
+    position: relative;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+}
+.blitem {
+    margin: 10px;
+    flex: 1;
+    max-width: 300px;
+}
+
+@include max-width(992px) {
+    .blitem {
+        flex-basis: 25%;
+    }
+}
+
+@include max-width(640px) {
+    .blitem {
+        flex-basis: 50%;
+    }
+}
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
