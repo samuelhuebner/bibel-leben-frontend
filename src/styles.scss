@@ -56,9 +56,11 @@ $bl-accent-color-dark: mat-color($bl-theme-accent, 500);
 
 // to avoid white margin on the app:
 body {
-    margin: 0;
     background-color: $bl-background-color-middle;
+    margin: 0;
 }
+
+html, body { height: 100%; }
 
 // this is to to disable text selecting on desired areas
 .noselect {
