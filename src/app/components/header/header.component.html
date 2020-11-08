@@ -27,7 +27,7 @@
           </span>
         </span>
   
-        <span fxFlex="auto"></span>
+        <span class="nav-spacer"></span>
   
         <!-- user menu for collapsed navigation -->
         <button mat-button [matMenuTriggerFor]="collapsedMenu" class="navigation-collapsed-menu">
@@ -56,17 +56,16 @@
         <!-- User button -->
         <!-- +++++++++++ -->
         <!-- two buttons, one if user is logged in, one, if user is not logged in -->
-        <!-- <button *ngIf="!me$" mat-button routerLink="/users">
+        <button *ngIf="!userData" mat-button routerLink="/auth">
           <mat-icon aria-hidden="false" aria-label="account icon">account_circle</mat-icon>
         </button>
   
-        <button *ngIf="me$" mat-button [matMenuTriggerFor]="userMenu">
-          <div *ngIf="me$.thumb_picture"></div>
-          <img src={{me$.thumb_picture}} alt="Profile Picture" style="height: 55px; border-radius: 50%;"
+        <button *ngIf="userData" mat-button [matMenuTriggerFor]="userMenu">
+          <div *ngIf="userData.thumb_picture"></div>
+          <img src={{userData.thumb_picture}} alt="Profile Picture" style="height: 55px; border-radius: 50%;"
             onerror="this.src='../../../../../assets/pictures/user.png'">
         </button>
         <mat-menu #userMenu="matMenu">
-  
           <button mat-menu-item routerLink="/users">
             <mat-icon aria-hidden="false" aria-label="account icon">account_circle</mat-icon>
             Users
@@ -76,8 +75,7 @@
             <mat-icon aria-hidden="false" aria-label="logout icon">logout</mat-icon>
             Logout
           </button>
-  
-        </mat-menu> -->
+        </mat-menu>
         <!-- +++++++++++ -->
         <!-- User button -->
         <!-- +++++++++++ -->

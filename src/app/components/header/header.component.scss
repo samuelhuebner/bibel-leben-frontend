@@ -19,6 +19,10 @@ h3 {
     color: white;
 }
 
+// auto whitespace between menu-points and user-button
+.nav-spacer {
+    flex: 1 1 auto;
+}
 
 mat-icon {
     color: white;
