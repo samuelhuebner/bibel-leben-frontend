@@ -1,9 +1,9 @@
 <div class="mail-register__container">
     <mat-card class="mail-register__card">
         <form
-            #registerForm="ngForm"
-            novalidate
-            (ngSubmit)="onSubmit(registerForm.value)">
+            [formGroup]="registerForm"
+            (ngSubmit)="onSubmit()"
+            novalidate>
             <mat-card-content>
                 <div>
                     <mat-form-field appearance="fill" class="mail-register__firstname">
@@ -11,14 +11,11 @@
                         <input
                             type="text"
                             matInput
-                            name="firstname"
                             placeholder="Max"
-                            ngModel
-                            required
-                            #firstname="ngModel"
-                            autocomplete="given-name">
-                        <mat-hint class="input__errors" *ngIf="firstname.touched">
-                            <div *ngIf="firstname.errors?.required">
+                            autocomplete="given-name"
+                            formControlName="firstname">
+                        <mat-hint class="input__errors" *ngIf="registerForm.controls.firstname.touched">
+                            <div *ngIf="registerForm.controls.firstname.errors?.required">
                                 Ein Vorname wird benötigt!
                             </div>
                         </mat-hint>
@@ -28,35 +25,30 @@
                         <input
                             type="text"
                             matInput
-                            name="lastname"
                             placeholder="Mustermann"
-                            ngModel
-                            required
-                            #lastname="ngModel"
-                            autocomplete="given-name">
-                        <mat-hint class="input__errors" *ngIf="lastname.touched">
-                            <div *ngIf="lastname.errors?.required">
+                            autocomplete="given-name"
+                            formControlName="lastname">
+                        <mat-hint class="input__errors" *ngIf="registerForm.controls.lastname.touched">
+                            <div *ngIf="registerForm.controls.lastname.errors?.required">
                                 Ein Nachname wird benötigt!
                             </div>
-                        </mat-hint>
+                        </mat-hint> 
                     </mat-form-field>
+                
                     <mat-form-field appearance="fill">
                         <mat-label>E-Mail</mat-label>
                         <input
                             matInput
                             type="email"
-                            name="email"
                             placeholder="example@example.com"
-                            ngModel
-                            required
                             email
-                            #email="ngModel"
-                            autocomplete="current-password">
-                        <mat-hint class="input__errors" *ngIf="email.touched">
-                            <div *ngIf="email.errors?.email">
+                            autocomplete="new-password"
+                            formControlName="email">
+                        <mat-hint class="input__errors" *ngIf="registerForm.controls.email.touched">
+                            <div *ngIf="registerForm.controls.email.errors?.email">
                                 Bitte gebe eine gültige E-Mail Adresse ein!
                             </div>
-                            <div *ngIf="email.errors?.required">
+                            <div *ngIf="registerForm.controls.email.errors?.required">
                                 Eine E-Mail Adresse wird benötigt!
                             </div>
                         </mat-hint>
@@ -67,39 +59,58 @@
                         <mat-label>Passwort</mat-label>
                         <input
                             matInput
-                            #password="ngModel"
                             [type]="hidePassword ? 'password' : 'text'"
-                            name="password"
                             placeholder="password"
-                            ngModel
-                            required
-                            autocomplete="current-password">
-                        <mat-hint class="input__errors" *ngIf="password.touched">
-                            <div *ngIf="password.errors?.required">
+                            autocomplete="new-password"
+                            formControlName="password"
+                            >
+                        <mat-hint class="input__errors" *ngIf="registerForm.controls.password.touched">
+                            <div *ngIf="registerForm.controls.password.errors?.required">
                                 Ein Passwort wird benötigt!
+                            </div>
+                            <div *ngIf="!(registerForm.controls.password.errors?.required) && registerForm.controls.password.errors">
+                                Das Passwort muss mindestens 6 Stellen haben!
+                            </div>
+                        </mat-hint>
+                    </mat-form-field>
+                    <mat-form-field appearance="fill">
+                        <mat-label>Passwort wiederholen</mat-label>
+                        <input
+                            matInput
+                            [type]="hidePassword ? 'password' : 'text'"
+                            placeholder="password"
+                            autocomplete="new-password"
+                            formControlName="confirmPassword"
+                            >
+                        <mat-hint class="input__errors" *ngIf="registerForm.controls.confirmPassword.touched">
+                            <div *ngIf="registerForm.controls.confirmPassword.errors?.required">
+                                Bitte Passwort bestätigen!
+                            </div>
+                            <div *ngIf="!(registerForm.controls.confirmPassword.errors?.required) && registerForm.hasError('notSame')">
+                                Passwörter stimmen nicht überein!
                             </div>
                         </mat-hint>
                     </mat-form-field>
                 </div>
                 <div class="mail-register__data-protection">
-                    <input type="checkbox"
-                        ngModel
-                        required>
+                    <mat-checkbox formControlName="dataConsent">
+                        Durch die Registrierung stimmen Sie unserer <a routerLink="/legal">Datenschutzerklärung</a> zu.
+                    </mat-checkbox>
                 </div>
-            </mat-card-content>
+        </mat-card-content>
 
-            <mat-card-actions>
-                <button
-                    mat-raised-button
-                    color="primary" 
-                    type="submit"
-                    class="mail-register__button"
-                    [disabled]="!registerForm.valid">Registrieren</button>
-            </mat-card-actions>
-            <mat-card-footer class="mail-register__card-footer">
-                <app-provider-auth>
-                </app-provider-auth>
-            </mat-card-footer>
+        <mat-card-actions class="mail-register__card-actions">
+            <button
+                mat-raised-button
+                color="primary" 
+                type="submit"
+                class="mail-register__button"
+                [disabled]="!registerForm.valid">Registrieren</button>
+        </mat-card-actions>
         </form>
+        <mat-card-footer class="mail-register__card-footer">
+            <app-provider-auth>
+            </app-provider-auth>
+        </mat-card-footer>
     </mat-card>
 </div>
