@@ -1,0 +1,16 @@
+.auth__container {
+    margin-top: 60px;
+    margin-right: auto;
+    margin-left: auto;
+    max-width: 800px;
+    min-width: 300px;
+}
+
+
+@media screen and (max-width: 800px) {
+    .auth__container {
+        max-width: 100%;
+        margin-right: 10px;
+        margin-left: 10px;
+    }
+}

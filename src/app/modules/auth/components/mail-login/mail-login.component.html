@@ -1,0 +1,65 @@
+<div class="mail-login__container">
+    <mat-card class="mail-login__card">
+        <form
+            #loginForm="ngForm"
+            novalidate
+            (ngSubmit)="onSubmit(loginForm.value)">
+            <mat-card-content>
+                <div>
+                    <mat-form-field appearance="fill">
+                        <mat-label>E-Mail</mat-label>
+                        <input
+                            matInput
+                            type="email"
+                            name="email"
+                            placeholder="example@example.com"
+                            ngModel
+                            required
+                            email
+                            #email="ngModel"
+                            autocomplete="current-password">
+                        <mat-hint class="input__errors" *ngIf="email.touched">
+                            <div *ngIf="email.errors?.email">
+                                Bitte gebe eine gültige E-Mail Adresse ein!
+                            </div>
+                            <div *ngIf="email.errors?.required">
+                                Eine E-Mail Adresse wird benötigt!
+                            </div>
+                        </mat-hint>
+                    </mat-form-field>
+                </div>
+                <div>
+                    <mat-form-field appearance="fill">
+                        <mat-label>Passwort</mat-label>
+                        <input
+                            matInput
+                            #password="ngModel"
+                            [type]="hidePassword ? 'password' : 'text'"
+                            name="password"
+                            placeholder="password"
+                            ngModel
+                            required
+                            autocomplete="current-password">
+                        <mat-hint class="input__errors" *ngIf="password.touched">
+                            <div *ngIf="password.errors?.required">
+                                Ein Passwort wird benötigt!
+                            </div>
+                        </mat-hint>
+                    </mat-form-field>
+                </div>
+            </mat-card-content>
+            <mat-card-actions>
+                <button
+                    mat-raised-button
+                    color="primary" 
+                    type="submit"
+                    class="mail-login__button"
+                    [disabled]="!loginForm.valid">Login</button>
+            </mat-card-actions>
+        </form>
+        <mat-card-footer class="mail-login__card-footer">
+            <app-provider-auth>
+            </app-provider-auth>
+        </mat-card-footer>
+    </mat-card>
+</div>

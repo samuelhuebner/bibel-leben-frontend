@@ -1,0 +1,28 @@
+
+<div class="auth__container">
+        <mat-tab-group mat-stretch-tabs [selectedIndex]="selected.value"
+            (selectedIndexChange)="selected.setValue($event)">
+
+            <!-- Login Tab -->
+            <mat-tab label="Login">
+                <app-mail-login
+                    (loginOutput)="onMailLogin($event)"></app-mail-login>
+            </mat-tab>
+
+
+
+            <!-- Register Tab -->
+            <mat-tab label="Registrieren">
+                <app-mail-register></app-mail-register>
+            </mat-tab>
+
+
+            <!-- Forgott PW Tab -->
+            <mat-tab *ngIf="seeForgottonPassword" label="neues PW">
+
+                passwort reset is here
+
+            </mat-tab>
+
+        </mat-tab-group>
+</div>
