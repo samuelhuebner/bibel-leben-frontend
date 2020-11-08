@@ -42,7 +42,6 @@ export class MailRegisterComponent implements OnInit {
    * the userdata 1 minute after creation
    */
   public async onSubmit(): Promise<void> {
-    console.log(this.registerForm.value);
     const userCredential = await this.authService
       .register(this.registerForm.value.email, this.registerForm.value.password);
 
