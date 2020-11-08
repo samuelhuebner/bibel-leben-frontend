@@ -56,13 +56,13 @@
         <!-- User button -->
         <!-- +++++++++++ -->
         <!-- two buttons, one if user is logged in, one, if user is not logged in -->
-        <button *ngIf="!userData" mat-button routerLink="/auth">
+        <button *ngIf="!isLoggedIn" mat-button (click)="onAuthClick()">
           <mat-icon aria-hidden="false" aria-label="account icon">account_circle</mat-icon>
         </button>
   
-        <button *ngIf="userData" mat-button [matMenuTriggerFor]="userMenu">
-          <div *ngIf="userData.thumb_picture"></div>
-          <img src={{userData.thumb_picture}} alt="Profile Picture" style="height: 55px; border-radius: 50%;"
+        <button *ngIf="isLoggedIn" mat-button [matMenuTriggerFor]="userMenu">
+          <div *ngIf="userData?.thumb_picture"></div>
+          <img src={{userData?.thumb_picture}} alt="Profile Picture" style="height: 55px; border-radius: 50%;"
             onerror="this.src='../../../../../assets/pictures/user.png'">
         </button>
         <mat-menu #userMenu="matMenu">
@@ -78,9 +78,7 @@
         </mat-menu>
         <!-- +++++++++++ -->
         <!-- User button -->
-        <!-- +++++++++++ -->
-  
-  
+        <!-- +++++++++++ -->  
       </mat-toolbar-row>
     </mat-toolbar>
   </div>
