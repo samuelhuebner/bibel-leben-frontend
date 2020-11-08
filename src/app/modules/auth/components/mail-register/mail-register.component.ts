@@ -37,7 +37,10 @@ export class MailRegisterComponent implements OnInit {
     }, this.checkConfirmPassword );
   }
 
-  // send entered data to register
+  /**
+   * Submit handler for the register button. Creates a new user and attempts to update
+   * the userdata 1 minute after creation
+   */
   public async onSubmit(): Promise<void> {
     console.log(this.registerForm.value);
     const userCredential = await this.authService
