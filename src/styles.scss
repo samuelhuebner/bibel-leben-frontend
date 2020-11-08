@@ -56,11 +56,11 @@ $bl-accent-color-dark: mat-color($bl-theme-accent, 500);
 
 // to avoid white margin on the app:
 body {
-    background-color: $bl-background-color-middle;
+    background-color: white;
     margin: 0;
+    margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; 
 }
-
-html, body { height: 100%; }
+// body { height: 100%; }
 
 // this is to to disable text selecting on desired areas
 .noselect {
@@ -83,46 +83,13 @@ html, body { height: 100%; }
     background: transparent; /* make scrollbar transparent */
 }
 
-// h1 {
-//     color: mat-color($bl19-theme-primary, darker);
-// }
-
-// h2 {
-//     color: mat-color($bl19-theme-primary, darker);
-// }
-
-// h3 {
-//     color: mat-color($bl19-theme-primary, darker);
-// }
-
-
 .bl19LightBackground {
-    background-color: $bl-background-color-light;
+    background-color: white;
 }
 
 .bl19DarkerBackground {
     background-color: $bl-background-color-dark;
 }
-
-
-.bl19inputFild {
-    width: 100%;
-}
-
-
-.blcenterelement {
-    position: relative;
-    display: flex;
-    justify-content: center;
-}
-
-
-
-.bl-border {
-    border-left: 2px solid $bl-background-color-middle;
-    margin-bottom: 10px;
-}
-
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++
 // +++++++++++ How to show Cards ++++++++++++++++++++++++
@@ -136,36 +103,34 @@ html, body { height: 100%; }
     }
 }
 
-// TODO: rename all blcontainer class-associations to simply container
-.blcontainer {
-    position: relative;
-    display: flex;
-    flex-flow: row wrap;
-    justify-content: center;
-}
+// // TODO: rename all blcontainer class-associations to simply container
+// .blcontainer {
+//     position: relative;
+//     display: flex;
+//     flex-flow: row wrap;
+//     justify-content: center;
+// }
 
-.container {
-    position: relative;
-    display: flex;
-    flex-flow: row wrap;
-    justify-content: center;
-}
-.blitem {
-    margin: 10px;
-    flex: 1;
-    max-width: 300px;
-}
+// .container {
+//     position: relative;
+//     display: flex;
+//     flex-flow: row wrap;
+//     justify-content: center;
+// }
+// .blitem {
+//     margin: 10px;
+//     flex: 1;
+//     max-width: 300px;
+// }
 
-@include max-width(992px) {
-    .blitem {
-        flex-basis: 25%;
-    }
-}
+// @include max-width(992px) {
+//     .blitem {
+//         flex-basis: 25%;
+//     }
+// }
 
-@include max-width(640px) {
-    .blitem {
-        flex-basis: 50%;
-    }
-}
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+// @include max-width(640px) {
+//     .blitem {
+//         flex-basis: 50%;
+//     }
+// }
