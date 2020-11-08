@@ -1,26 +1,29 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
+import { AngularFirestore } from '@angular/fire/firestore';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import firebase from 'firebase/app';
 
 import { bl19personOwn } from '../models/bl.models';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
   private user: Observable<firebase.User>;
-  private currentUserSubject: BehaviorSubject<bl19personOwn>;
   private currentUserData: BehaviorSubject<bl19personOwn>;
-  private userRef: AngularFirestoreDocument;
+  private loggedIn = new BehaviorSubject<boolean>(false);
 
   constructor(
     private firebaseAuth: AngularFireAuth,
-    private angularFirestore: AngularFirestore
+    private angularFirestore: AngularFirestore,
+    private router: Router,
+    private route: ActivatedRoute
   ) {
-    this.currentUserSubject = new BehaviorSubject(null);
+    this.loggedIn = new BehaviorSubject(Boolean(this.firebaseAuth.authState));
     this.currentUserData = new BehaviorSubject(null);
 
     this.user = this.firebaseAuth.user;
@@ -28,17 +31,21 @@ export class AuthService {
     this.user.subscribe((value) => {
       // if no uid is present no user is logged in so we have to return
       if (!value?.uid) {
-        console.log('auth-service: subscribtion: user is not logged in')
-        this.currentUserSubject.next(null);
+        if (environment.debug) {
+          console.log('auth-service: subscribtion: user is not logged in');
+        }
+        this.loggedIn.next(false);
         this.currentUserData.next(null);
         return;
       }
 
-      console.log('auth-service: subscription: user is logged in');
-      this.currentUserSubject.next(value);
+      if (environment.debug) {
+        console.log('auth-service: subscription: user is logged in');
+      }
+      this.loggedIn.next(true);
 
       if (!this.currentUserData.value) {
-        this.downloadUserData();
+        this.downloadUserData(value.uid);
       }
     });
   }
@@ -46,15 +53,17 @@ export class AuthService {
   /**
    * Function which downloads a users data given its UID and sets it to currentUserData
    */
-  private async downloadUserData(): Promise<void> {
-    const userPath = `users/u_default_groups/own_data/${this.currentUserSubject.value.UID}`;
-    this.userRef = this.angularFirestore.doc<any>(userPath);
+  private async downloadUserData(uid: string): Promise<void> {
+    const userPath = `users/u_default_groups/own_data/${uid}`;
+    const userRef = this.angularFirestore.doc<any>(userPath);
 
     try {
-      const userData = await this.userRef.get().toPromise();
-      this.currentUserData.next(userData);
+      const userData = await userRef.get().toPromise();
+      this.currentUserData.next(userData.data());
     } catch (error) {
-      console.error('auth-service: error downloading user-data');
+      if (environment.debug) {
+        console.error('auth-service: error downloading user-data');
+      }
     }
   }
 
@@ -73,7 +82,12 @@ export class AuthService {
         const google = new firebase.auth.GoogleAuthProvider();
         google.addScope('profile');
         google.addScope('email');
+
         const googleLogin = await this.firebaseAuth.signInWithPopup(google);
+
+        this.loggedIn.next(true);
+        const returnUrl = this.route.snapshot.queryParams.retUrl || 'home';
+        this.router.navigate([returnUrl]);
         return googleLogin;
       }
       default: {
@@ -88,8 +102,11 @@ export class AuthService {
    * @param email         The email of the registering user
    * @param password      The password of the registering user
    */
-  public register(email: string, password: string): Promise<firebase.auth.UserCredential> {
-    return this.firebaseAuth.createUserWithEmailAndPassword(email, password);
+  public async register(email: string, password: string): Promise<firebase.auth.UserCredential> {
+    const userCredential = await this.firebaseAuth.createUserWithEmailAndPassword(email, password);
+    const returnUrl = this.route.snapshot.queryParams.retUrl || 'auth';
+    this.router.navigate([returnUrl]);
+    return userCredential;
   }
 
   /**
@@ -98,8 +115,13 @@ export class AuthService {
    * @param email         The email of the user
    * @param password      The password of the user
    */
-  public login(email: string, password: string): Promise<firebase.auth.UserCredential> {
-    return this.firebaseAuth.signInWithEmailAndPassword(email, password);
+  public async login(email: string, password: string): Promise<firebase.auth.UserCredential> {
+    const userCredential = await this.firebaseAuth.signInWithEmailAndPassword(email, password);
+    this.loggedIn.next(true);
+
+    const returnUrl = this.route.snapshot.queryParams.retUrl || 'home';
+    this.router.navigate([returnUrl]);
+    return userCredential;
   }
 
   /**
@@ -130,13 +152,23 @@ export class AuthService {
 
     await this.firebaseAuth.signOut();
     this.currentUserData.next(null);
+    this.loggedIn.next(false);
+
+    switch (this.router.url) {
+      case '/profile':
+          this.router.navigate(['auth'])
+          break;
+      default:
+          this.router.navigate(['home']);
+          break;
+  }
   }
 
   /**
    * returns the current user-data
    */
   public getUser(): bl19personOwn {
-    return this.currentUserSubject.value;
+    return this.currentUserData.value;
   }
 
   /**
@@ -158,5 +190,12 @@ export class AuthService {
    */
   public getUserData(): bl19personOwn {
     return this.currentUserData;
+  }
+
+  /**
+   * Gets logged in status as BehaviorSubject
+   */
+  public isLoggedIn(): BehaviorSubject<boolean> {
+    return this.loggedIn;
   }
 }
