@@ -17,23 +17,17 @@ export class AuthComponent implements OnInit{
 
     constructor(
         private authService: AuthService,
-        private route: ActivatedRoute,
-        private router: Router,
         private snackbar: MatSnackBar
     ) { }
 
     ngOnInit(): void {
         this.seeForgottonPassword = true;
         this.selected = new FormControl(0);
-
-        // stores return-url from query-param retUrl so that the user can continue where he left when logging in
-        this.returnUrl = this.route.snapshot.queryParams.retUrl || '/home';
     }
 
     public async onMailLogin(data: { email: string, password: string}): Promise<void> {
         try {
             await this.authService.login(data.email, data.password);
-            this.onLoginComplete();
         } catch (error) {
             // console.log(error);
             // TODO: Display all possible error outcomes e.g: invalid password ...
@@ -42,12 +36,4 @@ export class AuthComponent implements OnInit{
             }
         }
     }
-
-    /**
-     * Function that navigates the router to the stored return url
-     */
-    onLoginComplete(): void {
-        this.router.navigate([this.returnUrl]);
-    }
-
 }
