@@ -53,7 +53,7 @@ export class AuthService {
   /**
    * Function which downloads a users data given its UID and sets it to currentUserData
    */
-  private async downloadUserData(uid: string): Promise<void> {
+  public async downloadUserData(uid: string): Promise<void> {
     const userPath = `users/u_default_groups/own_data/${uid}`;
     const userRef = this.angularFirestore.doc<any>(userPath);
 
