@@ -1,7 +1,11 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 
 import { AuthService } from '../../../../services/auth.service';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UserService } from 'src/app/services/user.service';
+import { bl19personOwn } from 'src/app/models/bl.models';
+import { error } from 'protractor';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-mail-register',
@@ -15,9 +19,11 @@ export class MailRegisterComponent implements OnInit {
   public hidePassword = true;
   public registerForm: FormGroup;
 
+  private updateData: bl19personOwn;
+
   constructor(
     private authService: AuthService,
-    private formBuilder: FormBuilder
+    private userService: UserService
   ) { }
 
   ngOnInit(): void {
@@ -32,10 +38,23 @@ export class MailRegisterComponent implements OnInit {
   }
 
   // send entered data to register
-  onSubmit(): void {
-    // this.authServ
-    //   .register(this.f.email.value, this.f.pw.value)
-    //   .then(() => this.successEmitter.emit(), (err) => { console.log(err); });
+  public async onSubmit(): Promise<void> {
+    console.log(this.registerForm.value);
+    const userCredential = await this.authService
+      .register(this.registerForm.value.email, this.registerForm.value.password);
+
+    this.updateData = {
+      UID: userCredential.user.uid,
+      name: `${this.registerForm.value.firstname} ${this.registerForm.value.lastname}`
+    };
+
+    // calls the updateUserHandler to update the user after 1 minute
+    // TODO: find a better solution
+    setTimeout(this.updateUserHandler.bind(this), 60000);
+  }
+
+  private updateUserHandler(): void {
+    this.userService.updateUserData(this.updateData);
   }
 
 
