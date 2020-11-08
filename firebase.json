@@ -1,0 +1,17 @@
+{
+  "hosting": {
+    "site": "development-bibel-leben",
+    "public": "dist/bibel-leben-frontend",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  }
+}
